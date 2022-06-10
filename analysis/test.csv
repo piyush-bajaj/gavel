@@ -1,3 +1,4 @@
+worker_type,model_name_1,scale_factor_1,batch_size_1,throughput_1,model_name_2,scale_factor_2,batch_size_2,throughput_2
 k80,ResNet-18,1,16,4.795294551566172,NaN,NaN,NaN,NaN
 k80,ResNet-18,1,16,2.539979567443098,ResNet-18,1,32,3.1201925448827033
 k80,ResNet-18,1,16,2.4081728540044867,ResNet-18,1,16,2.4081728540044867

@@ -20,6 +20,8 @@ if os.path.exists(throughput_file):
         if data:
             with open("analysis/test.csv", 'w') as output_file:
 
+                output_file.write('worker_type,model_name_1,scale_factor_1,batch_size_1,throughput_1,model_name_2,scale_factor_2,batch_size_2,throughput_2\n')
+
                 for worker_type in data:
                     
                     for model in data[worker_type] :                        
