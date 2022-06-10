@@ -8,7 +8,7 @@ def parse_job_type_tuple(job_type):
         return None
     model = match.group(1).split('(')
     model_name = model[0].rstrip().lstrip()
-    batch_size = '0' if len(model) == 1 else model[1].split(' ')[-1].split(')')[0]
+    batch_size = '1' if model_name == 'CycleGAN' else '4' if len(model) == 1 else model[1].split(' ')[-1].split(')')[0]
     scale_factor = match.group(2)
     return (model_name, scale_factor, batch_size)
 
