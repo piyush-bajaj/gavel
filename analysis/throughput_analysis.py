@@ -2,6 +2,7 @@ import os
 import json
 import re
 import argparse
+import pandas as pd
 
 def parse_job_type_tuple(job_type):
     match = re.match('\(\'(.*)\', (\d+)\)', job_type)
@@ -68,8 +69,6 @@ def main(args):
         raise OSError
     else :
         generate_csv(args.throughput, args.csv)
-        with open(args.csv, 'r') as f:
-            print(f.read())
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(
