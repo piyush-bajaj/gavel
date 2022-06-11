@@ -2,7 +2,6 @@ import os
 import json
 import re
 import argparse
-import pandas as pd
 
 def parse_job_type_tuple(job_type):
     match = re.match('\(\'(.*)\', (\d+)\)', job_type)
@@ -23,7 +22,7 @@ def generate_csv(throughput_file, csv):
             if data:
                 with open(csv, 'w') as output_file:
 
-                    output_file.write('worker_type,model_name_1,scale_factor_1,batch_size_1,throughput_1,model_name_2,scale_factor_2,batch_size_2,throughput_2\n')
+                    output_file.write('worker,model1,scale1,batchsize1,throughput1,model2,scale2,batchsize2,throughput2\n')
 
                     for worker_type in data:
                         
@@ -43,13 +42,13 @@ def generate_csv(throughput_file, csv):
                                 if second_model == 'null' : #space sharing is off
                                     output_file.write(str(data[worker_type][model][second_model])) #throughput value
                                     output_file.write(',')
-                                    output_file.write('NaN') #model Resnet-18, Transformer etc
+                                    output_file.write('x') #model Resnet-18, Transformer etc
                                     output_file.write(',')
-                                    output_file.write('NaN') #scaling factor (no. of workers) 1, 2, 4, 8
+                                    output_file.write('0') #scaling factor (no. of workers) 1, 2, 4, 8
                                     output_file.write(',')
-                                    output_file.write('NaN')   #batch size of model 16, 32, etc 0 if parameter absent
+                                    output_file.write('0')   #batch size of model 16, 32, etc 0 if parameter absent
                                     output_file.write(',')
-                                    output_file.write('NaN')
+                                    output_file.write('0')
                                 else : #space sharing is on
                                     output_file.write(str(data[worker_type][model][second_model][0])) #throughput value for first model in space sharing
                                     output_file.write(',')
