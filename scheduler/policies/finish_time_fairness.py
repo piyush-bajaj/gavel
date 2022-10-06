@@ -19,8 +19,10 @@ class FinishTimeFairnessPolicy(Policy):
                        unflattened_priority_weights,
                        times_since_start,
                        num_steps_remaining, cluster_spec):
+        #this is redundant code, done in perf method               
         throughputs, index = super().flatten(unflattened_throughputs,
                                              cluster_spec)
+        #this is redundant code, done in perf method
         if throughputs is None: return None
         (job_ids, worker_types) = index
 
@@ -60,7 +62,7 @@ class FinishTimeFairnessPolicyWithPerf(Policy):
             self._isolated_throughputs_prev_iteration = {}
             self._num_steps_remaining_prev_iteration = {}
             return None
-        (m, n) = throughputs.shape
+        (m, n) = throughputs.shape  #m=no. of jobs, n=no. of worker types
         (job_ids, worker_types) = index
 
         # Row i of scale_factors_array is the scale_factor of job i
@@ -74,7 +76,9 @@ class FinishTimeFairnessPolicyWithPerf(Policy):
              for job_id in job_ids])
 
         # Create allocation variable, and isolated allocation.
-        x = cp.Variable(throughputs.shape)
+        x = cp.Variable(throughputs.shape)  # optimization solver initilization
+        # calculate the summed throughputs as per the allocation, when whole cluster divided among m jobs
+        # so isolated throughputs change as the number of jobs change in the cluster
         isolated_throughputs = self._isolated_policy.get_throughputs(
             throughputs, index, scale_factors, cluster_spec)
         expected_time_fractions = []
@@ -82,21 +86,29 @@ class FinishTimeFairnessPolicyWithPerf(Policy):
             if job_ids[i] not in self._cumulative_isolated_time:
                 self._cumulative_isolated_time[job_ids[i]] = 0
             if job_ids[i] in self._num_steps_remaining_prev_iteration:
+                # increment isolated time by ( steps runs / throughput)
                 self._cumulative_isolated_time[job_ids[i]] += (
                     self._num_steps_remaining_prev_iteration[job_ids[i]] -
                     num_steps_remaining[job_ids[i]]) / \
                     self._isolated_throughputs_prev_iteration[job_ids[i]]
 
+            # 
             allocation_throughput = cp.sum(cp.multiply(throughputs[i], x[i]))
+            # calculate isolated time for the job = isolated time so far + (no. of steps remaining / no. of steps per second)
+            # no. of steps per second = throughput
             expected_time_isolated = self._cumulative_isolated_time[job_ids[i]] + \
                 (num_steps_remaining[job_ids[i]] / isolated_throughputs[i])
+            # calculate shared allocation time for the job = time so far for the job + (no. of steps remaining * iteration time current allocation for shared load)
             expected_time_allocation = times_since_start[job_ids[i]] + \
                 (num_steps_remaining[job_ids[i]] * cp.inv_pos(allocation_throughput))
+            # calculation of p = Tsh / Tid , finish_time_fairness metric
             expected_time_fraction = expected_time_allocation / expected_time_isolated
             expected_time_fractions.append(expected_time_fraction)
         if len(expected_time_fractions) == 1:
+            # finish_time_fairness for 1 job
             objective = cp.Minimize(expected_time_fractions[0])
         else:
+            # finish_time_fairness for all jobs
             objective = cp.Minimize(cp.maximum(*expected_time_fractions))
 
         # Make sure that the allocation can fit in the cluster.

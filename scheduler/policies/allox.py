@@ -21,11 +21,11 @@ class AlloXPolicy(Policy):
         throughputs, index = super().flatten(unflattened_throughputs,
                                              cluster_spec)
         if throughputs is None: return None
-        (m, n) = throughputs.shape
-        (job_ids, worker_types) = index
+        (m, n) = throughputs.shape #m=no. jobs, n=no. machines types
+        (job_ids, worker_types) = index #worker types and all the job ids
 
         # Make sure all scale factors are 1, since AlloX only supports jobs
-        # with scale factors of 1.
+        # with scale factors of 1. only assign to 1 machine
         for job_id in scale_factors:
             assert(scale_factors[job_id] == 1)
 
@@ -46,6 +46,7 @@ class AlloXPolicy(Policy):
                     unallocated_job_ids.append(job_id)
 
         m = len(unallocated_job_ids)
+        #create a map of worker id with its type
         n = 0
         worker_id_to_worker_type_mapping = {}
         for worker_type in worker_types:
@@ -57,8 +58,9 @@ class AlloXPolicy(Policy):
                 worker_id_to_worker_type_mapping[worker_id] = worker_type
                 n += 1
 
-        # Sort job IDs according to arrival time.
+        # Sort job IDs according to arrival time. fo FCFS
         unallocated_job_ids.sort(key=lambda x: -times_since_start[x])
+        #filter unallocated jobs, i.e. max of available workers or requested share of jobs based on alpha
         unallocated_job_ids = unallocated_job_ids[:max(int(self._alpha * m), n)]
         m = len(unallocated_job_ids)
 
@@ -83,7 +85,7 @@ class AlloXPolicy(Policy):
         d_base = np.zeros((m, n))
         for i in range(m):
             for j in range(n):
-                d_base[i, j] = times_since_start[unallocated_job_ids[i]]
+                d_base[i, j] = times_since_start[unallocated_job_ids[i]]#how much the job has to wait before being scheduled
         # d is computed as [d_base d_base d_base ... d_base].
         d = np.copy(d_base)
         for i in range(2, m+1):
@@ -95,14 +97,15 @@ class AlloXPolicy(Policy):
         # Solve assignment problem using Hungarian method (implemented in scipy).
         row_indices, col_indices = linear_sum_assignment(q)
 
-        # Extract assignment of jobs to worker types.
+        # Extract assignment of jobs to worker types. we only get the indices of 1 values in the result
         per_worker_id_job_assignment = {i: [] for i in range(n)}
         for (row_index, col_index) in zip(row_indices, col_indices):
             job_id = unallocated_job_ids[row_index]
             worker_id = col_index % n
             worker_type = worker_id_to_worker_type_mapping[worker_id]
-            worker_type_order = col_index // n
+            worker_type_order = col_index // n  #k-last job (j,i,k) config with i = worker_id
             per_worker_id_job_assignment[worker_id].append((job_id, worker_type_order))
+        #converting from k-th last to first, second, third, etc..ordering it correctly and then sorting to get correct order to schedule job on worker
         for worker_id in range(n):
             per_worker_id_job_assignment[worker_id] = [
                 (x[0], len(per_worker_id_job_assignment[worker_id]) -1 - x[1])
@@ -117,6 +120,7 @@ class AlloXPolicy(Policy):
         for job_id in job_ids:
             allocation[job_id] = \
                 {worker_type: 0.0 for worker_type in cluster_spec}
+        #for non preemption case, reassign existing allocation and delete which are completed
         for job_id in job_ids:
             if job_id in self._prev_allocation:
                 allocation[job_id] = copy.copy(self._prev_allocation[job_id])

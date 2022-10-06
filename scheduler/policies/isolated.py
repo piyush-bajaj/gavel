@@ -21,15 +21,20 @@ class IsolatedPolicy(Policy):
         for i in range(m):
             for j in range(n):
                 scale_factors_array[i, j] = scale_factors[job_ids[i]]
-
+        # calculate the allocation for each each job
         x_isolated = self._get_allocation(
             throughputs, index,
             scale_factors_array,
             cluster_spec)
+        # total isolated throughput is the sum of individual throughputs by allocation parts
+        # job distributed among the resources, suppose allocation is 0.5 of the resource for 2 jobs case then throughput of both is reduced 
+        # by factor of 0.5 and the total isolate throughput will be sum of each of these scaled throughputs 
         isolated_throughputs = np.sum(np.multiply(throughputs, x_isolated),
                                       axis=1).reshape((m, 1))
         return isolated_throughputs
 
+    # calculates the allocation of each job distributed on each worker type for counts of worker type
+    # consider you have 2 jobs and 1 resource then you will distribute 0.5 resource for each job. This function returns this 0.5
     def _get_allocation(self, throughputs, index, scale_factors_array,
                         cluster_spec):
         (_, worker_types) = index
