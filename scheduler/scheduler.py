@@ -2084,7 +2084,7 @@ class Scheduler:
                     state['SLOs'] = SLOs
                 else:
                     state['num_steps_remaining'] = {}
-        if self._policy.name.startswith("FinishTimeFairnessCost"):
+        if self._policy.name.startswith("SharedCostFairness"):
             state['instance_costs'] = copy.deepcopy(self._per_worker_type_prices)
         return state
 
@@ -2120,12 +2120,6 @@ class Scheduler:
                 throughputs, scale_factors,
                 times_since_start, num_steps_remaining,
                 cluster_spec)
-        elif self._policy.name.startswith("FinishTimeFairnessCost"):
-            instance_costs = state['instance_costs']
-            allocation = self._policy.get_allocation(
-                throughputs, scale_factors, priority_weights,
-                times_since_start, num_steps_remaining,
-                cluster_spec,instance_costs)
         elif self._policy.name.startswith("FinishTimeFairness"):
             allocation = self._policy.get_allocation(
                 throughputs, scale_factors, priority_weights,
@@ -2142,6 +2136,12 @@ class Scheduler:
             allocation = self._policy.get_allocation(
                 throughputs, scale_factors, num_steps_remaining,
                 cluster_spec)
+        elif self._policy.name.startswith("SharedCostFairness"):
+            instance_costs = state['instance_costs']
+            allocation = self._policy.get_allocation(
+                throughputs, scale_factors, priority_weights,
+                times_since_start, num_steps_remaining,
+                cluster_spec,instance_costs)
         elif self._policy.name.startswith("ThroughputNormalizedByCostSum"):
             instance_costs = state['instance_costs']
             if 'SLO' in self._policy.name:
