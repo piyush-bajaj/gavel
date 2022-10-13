@@ -1,0 +1,22 @@
+{
+    "SpotPriceHistory": [
+        {
+            "InstanceType": "p2.xlarge",
+            "Timestamp": "2011-10-05T14:48:00.000Z",
+            "AvailabilityZone": "eu",
+            "SpotPrice":0.9
+        },
+        {
+            "InstanceType": "p3.2xlarge",
+            "Timestamp": "2011-10-05T14:48:00.000Z",
+            "AvailabilityZone": "eu",
+            "SpotPrice":1.6
+        },
+        {
+            "InstanceType": "p1.xlarge",
+            "Timestamp": "2011-10-05T14:48:00.000Z",
+            "AvailabilityZone": "eu",
+            "SpotPrice":2.8
+        }
+    ]
+}
