@@ -11,7 +11,7 @@ class IsolatedPolicy(Policy):
         self._name = 'Isolated'
 
     def get_throughputs(self, throughputs, index, scale_factors,
-                        cluster_spec):
+                        cluster_spec, instance_costs=None):
         if throughputs is None: return None
         (job_ids, worker_types) = index
         (m, n) = throughputs.shape
@@ -29,8 +29,16 @@ class IsolatedPolicy(Policy):
         # total isolated throughput is the sum of individual throughputs by allocation parts
         # job distributed among the resources, suppose allocation is 0.5 of the resource for 2 jobs case then throughput of both is reduced 
         # by factor of 0.5 and the total isolate throughput will be sum of each of these scaled throughputs 
-        isolated_throughputs = np.sum(np.multiply(throughputs, x_isolated),
-                                      axis=1).reshape((m, 1))
+        if(instance_costs is None):
+            isolated_throughputs = np.sum(np.multiply(throughputs, x_isolated),
+                                    axis=1).reshape((m, 1))
+        else:
+            instance_costs_array = np.ones((1, n))
+            for i in range(n):
+                instance_costs_array[0, i] = instance_costs[worker_types[i]]
+            
+            isolated_throughputs = np.sum(np.multiply(np.divide(throughputs, instance_costs_array), x_isolated),
+                                    axis=1).reshape((m, 1))
         return isolated_throughputs
 
     # calculates the allocation of each job distributed on each worker type for counts of worker type
