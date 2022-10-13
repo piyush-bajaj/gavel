@@ -26,9 +26,12 @@ class SharedCostFairnessPolicy(Policy):
             for worker_type in unflattened_throughputs[job_id]:
                 # Hardcode worker_type to v100 where all other worker types
                 # have a throughput of 0 for some job.
-                if new_unflattened_throughputs[job_id][worker_type] == 0:
+                if unflattened_throughputs[job_id][worker_type] == 0:
                     new_unflattened_throughputs[job_id][worker_type] = \
                         unflattened_throughputs[job_id]['v100']
+                else:
+                    new_unflattened_throughputs[job_id][worker_type] = \
+                        unflattened_throughputs[job_id][worker_type]
 
         return self._finish_time_fairness_perf_policy.get_allocation(
             new_unflattened_throughputs, scale_factors,
