@@ -57,7 +57,9 @@ def simulate_with_timeout(experiment_id, policy_name,
                             time_per_iteration=interval,
                             simulate=True,
                             profiling_percentage=profiling_percentage,
-                            num_reference_models=num_reference_models)
+                            num_reference_models=num_reference_models,
+                            per_instance_type_prices_dir="/home/piyush/rp/work/scheduler/prices",
+                            available_clouds = ["aws"])
 
             if timeout is None:
                 sched.simulate(cluster_spec, lam=lam,
