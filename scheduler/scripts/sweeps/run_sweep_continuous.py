@@ -24,7 +24,7 @@ def simulate_with_timeout(experiment_id, policy_name,
                           generate_multi_priority_jobs, simulate_steady_state,
                           log_dir, timeout, verbose, checkpoint_threshold,
                           profiling_percentage, num_reference_models,
-                          num_gpus_per_server, ideal, instance_prices_dir, available_clouds):
+                          num_gpus_per_server, ideal, per_instance_type_prices_dir, available_clouds):
     lam_str = 'lambda=%f.log' % (lam)
     checkpoint_file = None
     if checkpoint_threshold is not None:
@@ -58,7 +58,7 @@ def simulate_with_timeout(experiment_id, policy_name,
                             simulate=True,
                             profiling_percentage=profiling_percentage,
                             num_reference_models=num_reference_models,
-                            per_instance_type_prices_dir=instance_prices_dir,
+                            per_instance_type_prices_dir=per_instance_type_prices_dir,
                             available_clouds = available_clouds)
 
             if timeout is None:
@@ -239,7 +239,7 @@ def main(args):
                                                   num_reference_models,
                                                   num_gpus_per_server,
                                                   args.ideal,
-                                                  args.instance_prices_dir,
+                                                  args.per_instance_type_prices_dir,
                                                   args.available_clouds))
                             experiment_id += 1
     if len(all_args_list) > 0:
@@ -335,11 +335,12 @@ if __name__=='__main__':
                                    'sweep'))
     fixed_range.add_argument('-n', '--num-data-points', type=int, default=20,
                              help='Number of data points to sweep through')
-
-    parser.add_argument('--instance_prices_dir', type=str, default='prices',
-                        help='Instance type prices directory path')
+    parser.add_argument('--per_instance_type_prices_dir', type=str,
+                        default='prices',
+                        help='Per-instance-type prices directory')
     parser.add_argument('--available_clouds', type=str, nargs='+',
-                        default=['aws'], choices=['aws', 'azure', 'gcp'],
-                        help='Available clouds')    
+                        choices=['aws', 'gcp', 'azure'],
+                        default=['aws'],
+                        help='Clouds available to rent machines from')    
     args = parser.parse_args()
     main(args)
