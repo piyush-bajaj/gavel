@@ -11,9 +11,9 @@ import subprocess
 
 from job import Job
 from job_table import JobTable
-from policies import allox, fifo, finish_time_fairness, finish_time_fairness_cost, gandiva, isolated, \
+from policies import allox, fifo, finish_time_fairness, gandiva, isolated, \
     max_min_fairness, max_min_fairness_water_filling, max_sum_throughput, \
-    min_total_duration
+    min_total_duration, shared_cost_fairness
 
 def _generate_scale_factor(rng):
     # Sample the scale factor from the Philly distribution.
@@ -201,7 +201,6 @@ def get_available_policies():
     return ['allox',
             'fifo', 'fifo_perf', 'fifo_packed',
             'finish_time_fairness',
-            'finish_time_fairness_cost',
             'finish_time_fairness_perf',
             'finish_time_fairness_packed',
             'gandiva',
@@ -219,6 +218,7 @@ def get_available_policies():
             'min_total_duration',
             'min_total_duration_perf',
             'min_total_duration_packed',
+            'shared_cost_fairness'
             ]
 
 def read_per_instance_type_spot_prices_aws(directory):
@@ -448,8 +448,6 @@ def get_policy(policy_name, solver=None, seed=None,
         policy = fifo.FIFOPolicyWithPacking()
     elif policy_name == 'finish_time_fairness':
         policy = finish_time_fairness.FinishTimeFairnessPolicy(solver=solver)
-    elif policy_name == 'finish_time_fairness_cost':
-        policy = finish_time_fairness_cost.FinishTimeFairnessWithCostPolicy(solver=solver)
     elif policy_name == 'finish_time_fairness_perf':
         policy = \
             finish_time_fairness.FinishTimeFairnessPolicyWithPerf(solver=solver)
@@ -496,6 +494,8 @@ def get_policy(policy_name, solver=None, seed=None,
     elif policy_name == 'min_total_duration_packed':
         policy = \
             min_total_duration.MinTotalDurationPolicyWithPacking(solver=solver)
+    elif policy_name == 'shared_cost_fairness':
+        policy = shared_cost_fairness.SharedCostFairnessPolicy(solver=solver)
     else:
         raise ValueError('Unknown policy!')
     return policy
