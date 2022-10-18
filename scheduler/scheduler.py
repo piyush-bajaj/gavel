@@ -2084,7 +2084,7 @@ class Scheduler:
                     state['SLOs'] = SLOs
                 else:
                     state['num_steps_remaining'] = {}
-        if self._policy.name.startswith("SharedCostFairness"):
+        if self._policy.name.startswith("SharedCloudCostFairness"):
             state['instance_costs'] = copy.deepcopy(self._per_worker_type_prices)
         return state
 
@@ -2136,7 +2136,7 @@ class Scheduler:
             allocation = self._policy.get_allocation(
                 throughputs, scale_factors, num_steps_remaining,
                 cluster_spec)
-        elif self._policy.name.startswith("SharedCostFairness"):
+        elif self._policy.name.startswith("SharedCloudCostFairness"):
             instance_costs = state['instance_costs']
             allocation = self._policy.get_allocation(
                 throughputs, scale_factors, priority_weights,
