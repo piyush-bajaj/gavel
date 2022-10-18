@@ -8,12 +8,12 @@ import numpy as np
 from policy import Policy
 from isolated import IsolatedPolicy
 
-class SharedCostFairnessPolicy(Policy):
+class SharedCloudCostFairnessPolicy(Policy):
 
     def __init__(self, solver):
-        self._name = 'SharedCostFairness'
-        self._finish_time_fairness_perf_policy = \
-            SharedCostFairnessPerf(solver)
+        self._name = 'SharedCloudCostFairness'
+        self._shared_cloud_cost_fairness_perf_policy = \
+            SharedCloudCostFairnessPerf(solver)
 
     def get_allocation(self, unflattened_throughputs, scale_factors,
                        unflattened_priority_weights,
@@ -33,18 +33,18 @@ class SharedCostFairnessPolicy(Policy):
                     new_unflattened_throughputs[job_id][worker_type] = \
                         unflattened_throughputs[job_id][worker_type]
 
-        return self._finish_time_fairness_perf_policy.get_allocation(
+        return self._shared_cloud_cost_fairness_perf_policy.get_allocation(
             new_unflattened_throughputs, scale_factors,
             unflattened_priority_weights,
             times_since_start,
             num_steps_remaining, cluster_spec, instance_costs)
 
 
-class SharedCostFairnessPerf(Policy):
+class SharedCloudCostFairnessPerf(Policy):
 
     def __init__(self, solver):
         Policy.__init__(self, solver)
-        self._name = 'SharedCostFairness_Perf'
+        self._name = 'SharedCloudCostFairness_Perf'
         self._isolated_policy = IsolatedPolicy()
         self._cumulative_isolated_cost = {}
         self._isolated_normalized_throughputs_prev_iteration = {}
@@ -79,14 +79,13 @@ class SharedCostFairnessPerf(Policy):
         # Create allocation variable, and isolated allocation.
         x = cp.Variable(throughputs.shape)  # optimization solver initilization
         
-        # calculate the summed throughputs as per the allocation, when whole cluster divided among m jobs
-        # so isolated throughputs change as the number of jobs change in the cluster
-        # calculate the allocation for each each job
+        # calculate the allocation of each job based on 1 / n of the cluster
         x_isolated = self._isolated_policy._get_allocation(
             throughputs, index,
             scale_factors_array_isolated,
             cluster_spec)
         
+        #convert instance costs into an array
         instance_costs_array = np.ones((1, n))
         for i in range(n):
             instance_costs_array[0, i] = instance_costs[worker_types[i]]
@@ -107,21 +106,21 @@ class SharedCostFairnessPerf(Policy):
 
             # divide throughput by cost since. This gives the allocation based on cost for throughput
             allocation_normalized_throughput = cp.sum(cp.multiply(cp.multiply(throughputs[i], cp.inv_pos(instance_costs_array[0])), x[i]))
-            # calculate isolated time for the job = isolated time so far + (no. of steps remaining / no. of steps per second)
-            # no. of steps per second = throughput
+            # calculate isolated cost for the job = isolated cost so far + (no. of steps remaining / (no. of steps per second / instance cost per second))
+            # no. of steps per second / instance cost per second = normalized throughput
             expected_cost_isolated = self._cumulative_isolated_cost[job_ids[i]] + \
                 (num_steps_remaining[job_ids[i]] / isolated_normalized_throughputs[i])
-            # calculate shared allocation time for the job = time so far for the job + (no. of steps remaining * iteration time current allocation for shared load)
+            # calculate shared allocation cost for the job = cost so far for the job + (no. of steps remaining * iteration cost current allocation for shared load)
             expected_cost_allocation = times_since_start[job_ids[i]] + \
                 (num_steps_remaining[job_ids[i]] * cp.inv_pos(allocation_normalized_throughput))
-            # calculation of p = Tsh / Tid , finish_time_fairness metric
+            # calculation of mu = Csh / Cid , shated_cost_fairness metric
             expected_cost_fraction = expected_cost_allocation / expected_cost_isolated
             expected_cost_fractions.append(expected_cost_fraction)
         if len(expected_cost_fractions) == 1:
-            # finish_time_fairness for 1 job
+            # shared_cost_fairness for 1 job
             objective = cp.Minimize(expected_cost_fractions[0])
         else:
-            # finish_time_fairness for all jobs
+            # shared_cost_fairness for all jobs
             objective = cp.Minimize(cp.maximum(*expected_cost_fractions))
 
         # Make sure that the allocation can fit in the cluster.
