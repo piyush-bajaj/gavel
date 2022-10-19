@@ -1,0 +1,73 @@
+cluster_spec,policy_name,seed,total_jobs,cost,utilization,average_completion_time,total_completion_time
+v100=5.p100=5.k80=5,gandiva,5,500,19865.80,0.882,588819.174 seconds (163.56 hours),2201859.635 seconds (611.63 hours)
+v100=5.p100=5.k80=5,gandiva,5,366,13700.23,0.811,398143.051 seconds (110.60 hours),
+v100=5.p100=5.k80=5,gandiva,5,233,7646.39,0.675,241698.440 seconds (67.14 hours),
+v100=5.p100=5.k80=5,gandiva,5,100,2512.79,0.384,110063.659 seconds (30.57 hours),728453.229 seconds (202.35 hours)
+v100=5.p100=5.k80=5,gandiva,9,500,22551.41,0.876,642319.131 seconds (178.42 hours),2519391.676 seconds (699.83 hours)
+v100=5.p100=5.k80=5,gandiva,9,366,16686.71,0.859,489622.656 seconds (136.01 hours),
+v100=5.p100=5.k80=5,gandiva,9,233,12416.71,0.804,376575.466 seconds (104.60 hours),
+v100=5.p100=5.k80=5,gandiva,9,100,4838.70,0.669,183262.436 seconds (50.91 hours),821995.248 seconds (228.33 hours)
+v100=5.p100=5.k80=5,gandiva,8,500,23168.69,0.913,636538.654 seconds (176.82 hours),2479336.291 seconds (688.70 hours)
+v100=5.p100=5.k80=5,gandiva,8,366,16361.59,0.878,446602.640 seconds (124.06 hours),
+v100=5.p100=5.k80=5,gandiva,8,233,10749.22,0.819,313173.809 seconds (86.99 hours),
+v100=5.p100=5.k80=5,gandiva,8,100,4558.51,0.603,159806.646 seconds (44.39 hours),811401.114 seconds (225.39 hours)
+v100=5.p100=5.k80=5,allox,5,500,10532.05,0.869,316472.172 seconds (87.91 hours),2226436.653 seconds (618.45 hours)
+v100=5.p100=5.k80=5,allox,5,366,7453.00,0.773,225900.210 seconds (62.75 hours),
+v100=5.p100=5.k80=5,allox,5,233,4407.09,0.689,146666.307 seconds (40.74 hours),
+v100=5.p100=5.k80=5,allox,5,100,1676.73,0.382,78680.565 seconds (21.86 hours),753749.520 seconds (209.37 hours)
+v100=5.p100=5.k80=5,allox,9,500,12148.71,0.906,357865.043 seconds (99.41 hours),2469449.425 seconds (685.96 hours)
+v100=5.p100=5.k80=5,allox,9,366,9318.49,0.847,284405.851 seconds (79.00 hours),
+v100=5.p100=5.k80=5,allox,9,233,7030.01,0.803,232159.417 seconds (64.49 hours),
+v100=5.p100=5.k80=5,allox,9,100,3215.65,0.648,136293.783 seconds (37.86 hours),869008.870 seconds (241.39 hours)
+v100=5.p100=5.k80=5,allox,8,500,12025.62,0.861,348454.266 seconds (96.79 hours),2563649.598 seconds (712.12 hours)
+v100=5.p100=5.k80=5,allox,8,366,8521.58,0.855,251478.280 seconds (69.86 hours),
+v100=5.p100=5.k80=5,allox,8,233,6011.36,0.751,191465.185 seconds (53.18 hours),
+v100=5.p100=5.k80=5,allox,8,100,2966.79,0.616,115870.004 seconds (32.19 hours),829468.184 seconds (230.41 hours)
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,5,500,10907.65,0.896,634910.139 seconds (176.36 hours),2275186.562 seconds (632.00 hours)
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,5,366,7684.38,0.835,433584.112 seconds (120.44 hours),
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,5,233,4577.02,0.665,265178.313 seconds (73.66 hours),
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,5,100,1806.29,0.328,125661.719 seconds (34.91 hours),1028699.838 seconds (285.75 hours)
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,9,500,12452.93,0.939,713480.888 seconds (198.19 hours),2481133.484 seconds (689.20 hours)
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,9,366,9608.54,0.916,549390.345 seconds (152.61 hours),
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,9,233,7249.09,0.881,419597.085 seconds (116.55 hours),
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,9,100,3374.42,0.668,208936.763 seconds (58.04 hours),943515.373 seconds (262.09 hours)
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,8,500,12377.84,0.895,684462.875 seconds (190.13 hours),2586042.628 seconds (718.35 hours)
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,8,366,8853.70,0.885,475876.561 seconds (132.19 hours),
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,8,233,6199.29,0.857,337614.518 seconds (93.78 hours),
+v100=5.p100=5.k80=5,shared_cloud_cost_fairness,8,100,3134.98,0.658,170874.355 seconds (47.47 hours),891746.718 seconds (247.71 hours)
+v100=5.p100=5.k80=5,max_min_fairness,5,500,12707.78,0.890,697798.718 seconds (193.83 hours),2671318.322 seconds (742.03 hours)
+v100=5.p100=5.k80=5,max_min_fairness,5,366,8890.49,0.820,472931.398 seconds (131.37 hours),
+v100=5.p100=5.k80=5,max_min_fairness,5,233,5213.64,0.661,287255.881 seconds (79.79 hours),
+v100=5.p100=5.k80=5,max_min_fairness,5,100,2036.44,0.343,139155.113 seconds (38.65 hours),1108485.832 seconds (307.91 hours)
+v100=5.p100=5.k80=5,max_min_fairness,9,500,14399.84,0.955,772776.952 seconds (214.66 hours),2821254.963 seconds (783.68 hours)
+v100=5.p100=5.k80=5,max_min_fairness,9,366,11118.87,0.929,587465.043 seconds (163.18 hours),
+v100=5.p100=5.k80=5,max_min_fairness,9,233,8336.65,0.881,449435.085 seconds (124.84 hours),
+v100=5.p100=5.k80=5,max_min_fairness,9,100,3787.11,0.654,222869.194 seconds (61.91 hours),1081092.521 seconds (300.30 hours)
+v100=5.p100=5.k80=5,max_min_fairness,8,500,14769.42,0.917,763546.615 seconds (212.10 hours),3013860.514 seconds (837.18 hours)
+v100=5.p100=5.k80=5,max_min_fairness,8,366,10497.44,0.870,526918.321 seconds (146.37 hours),
+v100=5.p100=5.k80=5,max_min_fairness,8,233,7324.33,0.848,376087.549 seconds (104.47 hours),
+v100=5.p100=5.k80=5,max_min_fairness,8,100,3542.90,0.622,187071.920 seconds (51.96 hours),1068189.903 seconds (296.72 hours)
+v100=5.p100=5.k80=5,fifo,5,500,14522.72,0.434,1087454.441 seconds (302.07 hours),6482242.152 seconds (1800.62 hours)
+v100=5.p100=5.k80=5,fifo,5,366,9576.15,0.704,730599.992 seconds (202.94 hours),
+v100=5.p100=5.k80=5,fifo,5,233,5738.54,0.504,432938.441 seconds (120.26 hours),
+v100=5.p100=5.k80=5,fifo,5,100,2258.07,0.358,173267.838 seconds (48.13 hours),1252989.300 seconds (348.05 hours)
+v100=5.p100=5.k80=5,fifo,9,500,13420.25,0.332,1734898.163 seconds (481.92 hours),6067484.943 seconds (1685.41 hours)
+v100=5.p100=5.k80=5,fifo,9,366,10302.17,0.332,1323986.930 seconds (367.77 hours),
+v100=5.p100=5.k80=5,fifo,9,233,7604.99,0.331,984291.947 seconds (273.41 hours),
+v100=5.p100=5.k80=5,fifo,9,100,3548.06,0.323,464582.436 seconds (129.05 hours),1649627.735 seconds (458.23 hours)
+v100=5.p100=5.k80=5,fifo,8,500,14484.14,0.331,1815099.494 seconds (504.19 hours),6559048.466 seconds (1821.96 hours)
+v100=5.p100=5.k80=5,fifo,8,366,10354.15,0.331,1265220.245 seconds (351.45 hours),
+v100=5.p100=5.k80=5,fifo,8,233,7314.47,0.328,888045.331 seconds (246.68 hours),
+v100=5.p100=5.k80=5,fifo,8,100,3273.34,0.316,383697.199 seconds (106.58 hours),1552611.224 seconds (431.28 hours)
+v100=5.p100=5.k80=5,finish_time_fairness,5,500,10660.61,0.847,558725.696 seconds (155.20 hours),2351572.262 seconds (653.21 hours)
+v100=5.p100=5.k80=5,finish_time_fairness,5,366,7522.83,0.811,382069.530 seconds (106.13 hours),
+v100=5.p100=5.k80=5,finish_time_fairness,5,233,4513.39,0.633,236895.827 seconds (65.80 hours),
+v100=5.p100=5.k80=5,finish_time_fairness,5,100,1816.81,0.317,117725.786 seconds (32.70 hours),1070743.821 seconds (297.43 hours)
+v100=5.p100=5.k80=5,finish_time_fairness,9,500,12189.47,0.880,629261.885 seconds (174.79 hours),2591940.613 seconds (719.98 hours)
+v100=5.p100=5.k80=5,finish_time_fairness,9,366,9393.65,0.848,486119.386 seconds (135.03 hours),
+v100=5.p100=5.k80=5,finish_time_fairness,9,233,7160.55,0.822,375961.179 seconds (104.43 hours),
+v100=5.p100=5.k80=5,finish_time_fairness,9,100,3378.58,0.618,192824.028 seconds (53.56 hours),1022422.142 seconds (284.01 hours)
+v100=5.p100=5.k80=5,finish_time_fairness,8,500,12060.06,0.895,606530.705 seconds (168.48 hours),2519924.766 seconds (699.98 hours)
+v100=5.p100=5.k80=5,finish_time_fairness,8,366,8661.56,0.888,423037.050 seconds (117.51 hours),
+v100=5.p100=5.k80=5,finish_time_fairness,8,233,6127.55,0.830,304479.908 seconds (84.58 hours),
+v100=5.p100=5.k80=5,finish_time_fairness,8,100,3146.93,0.602,159701.116 seconds (44.36 hours),978314.986 seconds (271.75 hours)
